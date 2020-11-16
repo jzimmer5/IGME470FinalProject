@@ -5,7 +5,7 @@
 //time it takes to complete task variables
 unsigned long startTime;
 unsigned long endTime;
-unsigned long timeTook = 0;
+long timeTook = 0;
 
 char ssid[] = SECRET_SSID;   // your network SSID (name) 
 char pass[] = SECRET_PASS;   // your network password
@@ -48,10 +48,9 @@ void loop() {
   
   //all task method calls should be called within this if statement
   if(checkTurn()) {
+    //switch goes here
   
-  //put this call after the end of any task method
-  calculateTime();
-
+    calculateTime();
   }
 }
 
@@ -86,10 +85,6 @@ void uploadTime() {
   else{
     Serial.println("Problem updating channel. HTTP error code " + String(x));
   }
-}
-
-void thinkspeakSubmit() {
-  
 }
 
 void potentionmeterRGB() {
