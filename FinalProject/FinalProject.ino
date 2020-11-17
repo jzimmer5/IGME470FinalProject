@@ -100,5 +100,12 @@ void distanceUltrasonic() {
 }
 
 void switchLED() {
-  
+   if (digitalRead(butPin) == HIGH) {  // If switch is ON,
+        Serial.write(1);               // send 1 to Processing
+        digitalWrite(ledPin, HIGH);
+      } else {                               // If the switch is not ON,
+        Serial.write(0);               // send 0 to Processing
+        digitalWrite(ledPin, LOW);
+      }     
+      delay(1); 
 }
