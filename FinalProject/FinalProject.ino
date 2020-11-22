@@ -12,15 +12,34 @@ char pass[] = SECRET_PASS;   // your network password
 WiFiClient  client;
 
 // channel details
-
 unsigned long channelNumber = SECRET_CH_ID_COUNTER;
 const char * myAPIKey = SECRET_READ_APIKEY_COUNTER;
 unsigned int player1FieldNumber = SECRET_PLAYER_ONE_FIELD_NUMBER; 
-unsigned int player2FieldNumber = SECRET_PLAYER_TWO_FIELD_NUMBER; 
+unsigned int player2FieldNumber = SECRET_PLAYER_TWO_FIELD_NUMBER;
+
+//set this to where your buzzer is connected
+const int buzzer = 9;
+
+//set this to where your button is connected
+const int button = 3;
+
+//set this to where your slide switch is connected
+const int slideSwitch = 12;
+
+//set this to where your led switch is connected
+const int led = 4;
+
+//set this to true if you are going to be player 1
+bool start = true;
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
+
+  pinMode(buzzer,OUTPUT);
+  pinMode(led,OUTPUT);
+  pinMode(button,INPUT);
+  pinMode(slideSwitch,INPUT);
 
   // check for the WiFi module:
   if (WiFi.status() == WL_NO_MODULE) {
@@ -47,11 +66,13 @@ void loop() {
   }
   
   //all task method calls should be called within this if statement
-  if(checkTurn()) {
+  if(start) {
     //switch goes here
   
     calculateTime();
   }
+
+  start = checkTurn();
 }
 
 //checks to see if there has been a change in the opposite channel, if so then it is this arduino's turn
@@ -92,7 +113,11 @@ void potentionmeterRGB() {
 }
 
 void buttonBuzzer() {
-  
+  tone(buzzer,1000);
+  if( digitalRead(button) == HIGH) {
+    noTone(buzzer);
+    completeTask();
+  }
 }
 
 void distanceUltrasonic() {
@@ -100,12 +125,10 @@ void distanceUltrasonic() {
 }
 
 void switchLED() {
-   if (digitalRead(butPin) == HIGH) {  // If switch is ON,
-        Serial.write(1);               // send 1 to Processing
-        digitalWrite(ledPin, HIGH);
-      } else {                               // If the switch is not ON,
-        Serial.write(0);               // send 0 to Processing
-        digitalWrite(ledPin, LOW);
-      }     
-      delay(1); 
+   int slideState = digitalRead(slideSwitch);
+   digitalWrite(led, HIGH);
+   if (digitalRead(slideSwitch) != slideState) {
+      digitalWrite(led, LOW);
+      completeTask();
+   }
 }
