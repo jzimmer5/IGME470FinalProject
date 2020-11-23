@@ -30,16 +30,16 @@ int rgbLEDPinB=6;
 int rgbAnalog=A0;
 
 //the pins for the buzzer task
-int buttonPin = 7;
-int buzzerPin = 8;
+int buttonPin = 11;
+int buzzerPin = 12;
 
 //the pins for the distance sensor task
 int triggerPin = 9;
 int echoPin = 10;
 
 //the pins for the switch task
-int switchLEDPin = 11;
-int switchPin = 12;
+int switchLEDPin = 7;
+int switchPin = 8;
 
 bool taskAssigned = false;
 int currentTask;
@@ -95,9 +95,11 @@ void loop() {
   //all task method calls should be called within this if statement
   if(start) {
     //designate a task for this turn
+    startTime = millis();
     if(!taskAssigned){
       currentTask=getNewTask();
       taskAssigned = true;
+      Serial.println(currentTask);
     }
     
     while(!taskComplete){
@@ -126,7 +128,7 @@ void loop() {
   }
   else
   {
-    digitalWrite(turnLight, HIGH);
+    digitalWrite(turnLight, LOW);
   }
 
    start = checkTurn();
@@ -152,14 +154,17 @@ bool checkTurn() {
 
   //read the channel other persons channel
   long firstRead = ThingSpeak.readLongField(channelNumber, player2FieldNumber, myReadAPIKey);
+  Serial.println("checkTurn called...");
+  Serial.println(firstRead);
   while(!myTurn){
+    Serial.println(". ");
     long nextRead = ThingSpeak.readLongField(channelNumber, player2FieldNumber, myReadAPIKey);
+    Serial.println(nextRead);
     if(firstRead != nextRead) {
      myTurn = true;
     }
     delay(1000);
   }
-  startTime = millis();
   return myTurn;
 }
 
