@@ -15,7 +15,8 @@ WiFiClient  client;
 // channel details
 
 unsigned long channelNumber = SECRET_CH_ID_COUNTER;
-const char * myAPIKey = SECRET_READ_APIKEY_COUNTER;
+const char * myReadAPIKey = SECRET_READ_APIKEY_COUNTER;
+const char * myWriteAPIKey = SECRET_WRITE_APIKEY_COUNTER;
 unsigned int player1FieldNumber = SECRET_PLAYER_ONE_FIELD_NUMBER;
 unsigned int player2FieldNumber = SECRET_PLAYER_TWO_FIELD_NUMBER;
 
@@ -149,9 +150,9 @@ bool checkTurn() {
   bool myTurn = false;
 
   //read the channel other persons channel
-  long firstRead = ThingSpeak.readLongField(channelNumber, player2FieldNumber, myAPIKey);
+  long firstRead = ThingSpeak.readLongField(channelNumber, player2FieldNumber, myReadAPIKey);
   while(!myTurn){
-    long nextRead = ThingSpeak.readLongField(channelNumber, player2FieldNumber, myAPIKey);
+    long nextRead = ThingSpeak.readLongField(channelNumber, player2FieldNumber, myReadAPIKey);
     if(firstRead != nextRead) {
      myTurn = true;
     }
@@ -168,7 +169,7 @@ void calculateTime() {
 }
 
 void uploadTime() {
-  int x = ThingSpeak.writeField(channelNumber, player1FieldNumber, timeTook, myAPIKey);
+  int x = ThingSpeak.writeField(channelNumber, player1FieldNumber, timeTook, myWriteAPIKey);
   if(x == 200){
     Serial.println("Channel update successful.");
   }
