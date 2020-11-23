@@ -38,7 +38,7 @@ int triggerPin = 9;
 int echoPin = 10;
 
 //the pins for the switch task
-int switchLED = 11;
+int switchLEDPin = 11;
 int switchPin = 12;
 
 bool taskAssigned = false;
@@ -47,16 +47,17 @@ int taskParameter;
 int previousSwitchState;
 bool taskComplete = false;
 bool start = true;
+int blinkVal;
 
 unsigned long millisCounter=0;
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
+  Serial.begin(9600);
   //set up all the pins we'll be using
-  pinMode(rgbLEDpinR,OUTPUT);
-  pinMode(rgbLEDpinG,OUTPUT);
-  pinMode(rgbLEDpinB,OUTPUT);
+  pinMode(rgbLEDPinR,OUTPUT);
+  pinMode(rgbLEDPinG,OUTPUT);
+  pinMode(rgbLEDPinB,OUTPUT);
   pinMode(rgbAnalog,INPUT);
   pinMode(buttonPin,INPUT);
   pinMode(buzzerPin,OUTPUT);
@@ -120,8 +121,8 @@ void loop() {
           break;
         
       }
-      calculateTime();
     }
+    calculateTime();
   }
   else
   {
@@ -133,7 +134,7 @@ void loop() {
 
 int getNewTask()
 {
-  tastComplete=false;
+  taskComplete=false;
   taskParameter = random(0,1024);
   return random(0,4);
 }
@@ -259,10 +260,10 @@ void potentiometerRGB(int target) {
 
 void buttonBuzzer()
 {
-  tone(buzzer,1000);
-  if( digitalRead(button) == HIGH)
+  tone(buzzerPin,1000);
+  if( digitalRead(buttonPin) == HIGH)
   {
-    noTone(buzzer);
+    noTone(buzzerPin);
     completeTask();
   }
 }
