@@ -46,7 +46,7 @@ int currentTask;
 int taskParameter;
 int previousSwitchState;
 bool taskComplete = false;
-bool start = true;
+bool start = false;
 int blinkVal;
 
 unsigned long millisCounter=0;
@@ -125,12 +125,8 @@ void loop() {
       }
     }
     calculateTime();
-  }
-  else
-  {
     digitalWrite(turnLight, LOW);
   }
-
    start = checkTurn();
 }
 
@@ -162,6 +158,7 @@ bool checkTurn() {
     Serial.println(nextRead);
     if(firstRead != nextRead) {
      myTurn = true;
+     delay(15000);
     }
     delay(1000);
   }
@@ -191,7 +188,7 @@ void potentiometerRGB(int target) {
   Serial.print("\t");
   Serial.println(target);
   //check if the potentiometer is set to a value close enough to the target
-  if(abs(input-target)<3)
+  if(abs(input-target)<10)
   {
       millisCounter++;
       if(millisCounter%50==0)
