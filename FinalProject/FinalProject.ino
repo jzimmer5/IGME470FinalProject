@@ -34,12 +34,12 @@ int buttonPin = 11;
 int buzzerPin = 12;
 
 //the pins for the distance sensor task
-int triggerPin = 9;
+int triggerPin = 8;
 int echoPin = 10;
 
 //the pins for the switch task
 int switchLEDPin = 7;
-int switchPin = 8;
+int switchPin = 9;
 
 bool taskAssigned = false;
 int currentTask;
