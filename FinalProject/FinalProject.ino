@@ -167,7 +167,7 @@ bool checkTurn() {
 
 void calculateTime() {
   endTime = millis();
-  timeTook = (endTime - startTime)/1000;
+  timeTook += (endTime - startTime)/1000;
   uploadTime();
 }
 
